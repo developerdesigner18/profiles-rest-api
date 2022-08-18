@@ -13,10 +13,9 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
-  config.vm.box_version = "~> 20200304.0.0"
+  config.vm.box_version = "~> 20220609.0.0"
  
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
-  config.vm.boot_timeout = 300
+  config.vm.network "forwarded_port", guest: 8001, host: 8001
   config.vm.provider "virtualbox" do |v|
     v.gui = true
   end
@@ -24,10 +23,10 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
     vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
   end
+ 
   config.vm.provision "shell", inline: <<-SHELL
     systemctl disable apt-daily.service
     systemctl disable apt-daily.timer
-  
     sudo apt-get update
     sudo apt-get install -y python3-venv zip
     touch /home/vagrant/.bash_aliases
